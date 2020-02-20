@@ -48,6 +48,8 @@ ClickerFixer will intercept the input from the configured input device. The inpu
 ### Download
 License: MIT
 
+- [Windows x64](https://github.com/navhaxs/ClickerFixer/releases)
+
 ClickerFixer requires the Interception driver to be installed, which can be downloaded from [here](https://github.com/oblitum/Interception) and the `interception.dll` file copied to ClickerFixer's working directory.
 
 ### Acknowledgements
