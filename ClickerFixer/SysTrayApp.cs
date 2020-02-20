@@ -16,39 +16,42 @@ namespace ClickerFixer
         [STAThread]
         public static void Main()
         {
-            var p = new OptionSet() {
+            MutexUtil.WrapSingleInstance(() =>
+            {
+                var p = new OptionSet() {
                 { "p|port=", "ProPresenter network port number", (int _port) => AppConfig.port = _port },
                 { "r|password=", "ProPresenter network remote control password", (string _password) => AppConfig.password = _password }
             };
 
-            try
-            {
-                p.Parse(Environment.GetCommandLineArgs());
-            }
-            catch (OptionException e)
-            {
-                var stringBuilder = new StringBuilder();
-
-                using (TextWriter writer = new StringWriter(stringBuilder))
+                try
                 {
-                    p.WriteOptionDescriptions(writer);
+                    p.Parse(Environment.GetCommandLineArgs());
+                }
+                catch (OptionException e)
+                {
+                    var stringBuilder = new StringBuilder();
+
+                    using (TextWriter writer = new StringWriter(stringBuilder))
+                    {
+                        p.WriteOptionDescriptions(writer);
+                    }
+
+                    MessageBox.Show("Command line arguments failed to parse. Error:\n" + e.Message);
+
+                    MessageBox.Show("ClickerFixer command line arguments usage:\n" + stringBuilder.ToString());
+
+                    return;
                 }
 
-                MessageBox.Show("Command line arguments failed to parse. Error:\n" + e.Message);
+                Application.ApplicationExit += new EventHandler((s, e) => {
+                    if (_clickerListener != null)
+                    {
+                        _clickerListener.Abort();
+                    }
+                });
 
-                MessageBox.Show("ClickerFixer command line arguments usage:\n" + stringBuilder.ToString());
-
-                return;
-            }
-
-            Application.ApplicationExit += new EventHandler((s, e) => {
-                if (_clickerListener != null)
-                {
-                    _clickerListener.Abort();
-                }
+                Application.Run(new SysTrayApp());
             });
-
-            Application.Run(new SysTrayApp());
         }
 
         private static ClickerInputListener _clickerListener;
