@@ -30,8 +30,8 @@ devices.txt ‐ *VID string of HID devices to match, one per line. ClickerFixer 
 e.g.
 ```
 HID\\VID_046D&PID_C540
-HID\\VID_046D&PID_C541
-HID\\VID_046D&PID_C542
+HID\\VID_046D&PID_C538
+HID\\VID_046D&PID_C52D
 ```
 
 **If you have ProPresenter:** enable the network remote in its preferences (this is how ClickerFixer sends its commands, websockets turns out to be quite reliable for slides control)
